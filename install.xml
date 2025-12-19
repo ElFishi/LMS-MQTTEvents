@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<extension>
+  <id>MQTTEvents</id>
+  <optionsURL>plugins/MQTTEvents/settings.html</optionsURL>
+  <icon>plugins/MQTTEvents/mqtt-icon-solid.png</icon>
+  <type>plugin</type>
+  <name>PLUGIN_MQTTEVENTS_NAME</name>
+  <description>PLUGIN_MQTTEVENTS_DESC</description>
+  <version>0.7</version>
+  <module>Plugins::MQTTEvents::Plugin</module>
+  <creator>ElFishi</creator>
+  <targetApplication>
+    <id>Logitech Media Server</id>
+    <minVersion>9.0</minVersion>
+    <maxVersion>*</maxVersion>
+  </targetApplication>
+</extension>

@@ -1,0 +1,60 @@
+[% PROCESS settings/header.html %]
+
+<form method="post">
+	<input type="hidden" name="saveSettings" value="1"/>
+
+	[% WRAPPER setting title="PLUGIN_MQTTEVENTS_SETTINGS" %]
+		<div>[% "PLUGIN_MQTTEVENTS_DESC" | string %]</div>
+	[% END %]
+
+	<div class="prefDesc">
+		[% WRAPPER setting title="PLUGIN_MQTTEVENTS_STATUS" %]
+			<div style="display: flex; align-items: center;">
+				[% IF mqttevents_connected == 1 %]
+					<b style="color:green;">&bull; [% "PLUGIN_MQTTEVENTS_CONNECTED" | string %]</b>
+				[% ELSE %]
+					<b style="color:red;">&bull; [% "PLUGIN_MQTTEVENTS_DISCONNECTED" | string %]</b>
+				[% END %]
+
+				[% IF mqttevents_message %]
+					<span style="margin-left: 15px; font-style: italic; color: #555;">
+						[% mqttevents_message | html %]
+					</span>
+				[% END %]
+			</div>
+		[% END %]
+
+		<hr>
+
+		[% WRAPPER setting title="PLUGIN_MQTTEVENTS_BROKER_HOST" desc="PLUGIN_MQTTEVENTS_BROKER_HOST_DESC" %]
+			<input type="text" class="stdedit" name="pref_broker_host" value="[% pref_broker_host | html %]" size="32"/>
+		[% END %]
+
+		[% WRAPPER setting title="PLUGIN_MQTTEVENTS_BROKER_PORT" desc="PLUGIN_MQTTEVENTS_BROKER_PORT_DESC" %]
+			<input type="number" class="stdedit" name="pref_broker_port" value="[% pref_broker_port | html %]" min="1" max="65535"/>
+		[% END %]
+
+		[% WRAPPER setting title="PLUGIN_MQTTEVENTS_USERNAME" desc="PLUGIN_MQTTEVENTS_AUTH_DESC" %]
+			<input type="text" class="stdedit" name="pref_username" value="[% pref_username | html %]" size="32"/>
+		[% END %]
+
+		[% WRAPPER setting title="PLUGIN_MQTTEVENTS_PASSWORD" desc="PLUGIN_MQTTEVENTS_AUTH_DESC" %]
+			<input type="password" class="stdedit" name="pref_password" value="[% pref_password | html %]" size="32"/>
+		[% END %]
+
+		[% WRAPPER setting title="PLUGIN_MQTTEVENTS_BASE_TOPIC" desc="PLUGIN_MQTTEVENTS_BASE_TOPIC_DESC" %]
+			<input type="text" class="stdedit" name="pref_base_topic" value="[% pref_base_topic | html %]" size="32"/>
+		[% END %]
+
+		[% WRAPPER setting title="PLUGIN_MQTTEVENTS_RETAIN" desc="PLUGIN_MQTTEVENTS_RETAIN_DESC" %]
+			<input type="checkbox" name="pref_retain" value="1" [% IF pref_retain %]checked="checked"[% END %] />
+		[% END %]
+	</div>
+
+	<div class="actionbuttons">
+		<input type="submit" name="testConnection" class="standardButton" value="[% 'PLUGIN_MQTTEVENTS_TEST_CONNECTION' | string %]"/>
+		<input type="submit" name="publishExamples" class="standardButton" value="[% 'PLUGIN_MQTTEVENTS_PUBLISH_EXAMPLES' | string %]"/>
+	</div>
+</form>
+
+[% PROCESS settings/footer.html %]
