@@ -6,7 +6,7 @@ Includes a Settings page to configure broker **host/port**, optional **username/
 Also provides **Test connection** and **Publish example payloads** buttons.
 
 ## Installation (manual)
-1. This plugin comes with its own copy of the Perl module **Net::MQTT::Simple**. If this doesn't work you can install it on the LMS host (e.g., `cpan Net::MQTT::Simple` or your distro package `libnet-mqtt-simple-perl`).
+1. This plugin comes with its own copy of the Perl module [**Net::MQTT::Simple**](https://metacpan.org/pod/Net::MQTT::Simple). If this doesn't work you can install it on the LMS host (e.g., `cpan Net::MQTT::Simple` or your distro package `libnet-mqtt-simple-perl`).
 2. Copy the `MQTTEvents` folder into your LMS third-party **Plugins** directory.
    - The correct path for manual plugins is listed at the bottom of **Settings → Information** in LMS.
    - Normally it is not the path with "cache"
