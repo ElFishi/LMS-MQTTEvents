@@ -14,9 +14,9 @@ Also provides **Test connection** and **Publish example payloads** buttons.
 4. Open **Settings → Plugins → MQTT Events (Broker Settings)** and configure your broker.
 
 ## Topics & payloads
-- Power: `<base>/<player-mac>/power` → `{ "value": 0|1 }`
-- Volume: `<base>/<player-mac>/mixer/volume` → `{ "value": 0..100 }`
-- Muting: `<base>/<player-mac>/mixer/muting` → `{ "value": 0|1 }`
+- Power:  `<base>/<player-mac>/power`        → `{"player":"<player-mac>", "key":"power", "value": 0|1 }`
+- Volume: `<base>/<player-mac>/mixer/volume` → `{"player":"<player-mac>", "key":"volume", "value": 0..100 }`
+- Muting: `<base>/<player-mac>/mixer/muting` → `{"player":"<player-mac>", "key":"muting", "value": 0|1 }`
 
 Default base is `lms`.
 
@@ -24,3 +24,8 @@ Default base is `lms`.
 - Auth is optional. TLS is **not** used.
 - Publishing uses QoS 0 (`Net::MQTT::Simple`).
 - Logging can be set to ERROR/WARN/INFO/DEBUG in Advanced/Logging.
+
+## Disclaimer
+- This plugin was almost entirely written by LLMs. 
+- It is just a proof-of-concept and not fully tested. Use it at your own risk.
+- This repository is not maintained.

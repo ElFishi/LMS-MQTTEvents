@@ -64,9 +64,9 @@ sub handler {
             };
 
             my $root = $base || 'lms';
-            $pub->("$root/_example/power",         '{"value":1}');
-            $pub->("$root/_example/mixer/volume",  '{"value":27}');
-            $pub->("$root/_example/mixer/muting",  '{"value":0}');
+            $pub->("$root/_example/power",         '{"player":"_example", "key":"power", "value":1}');
+            $pub->("$root/_example/mixer/volume",  '{"player":"_example", "key":"volume", "value":27}');
+            $pub->("$root/_example/mixer/muting",  '{"player":"_example", "key":"muting", "value":0}');
             undef $mqtt;
             1;
         };

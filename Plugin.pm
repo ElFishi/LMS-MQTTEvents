@@ -66,39 +66,40 @@ sub handleNotification {
     my $request = shift;
     my $client   = $request->client() || return;
     
-    # Debug level logging to keep the console clean normally
     $log->debug("Notification: " . $request->getRequestString());
 
     my $mac = $client->id() || return;
-    $mac =~ s/://g;
+    $mac =~ s/://g; # Strip colons for Topic/Player usage
 
     my $base = $prefs->get('base_topic') || 'lms';
-    my ($topic, $value);
+    my ($topic, $value, $key);
 
-    # Verified syntax from successful logs
     if ($request->isCommand([['power']])) {
         my $power = $request->getParam('_newvalue');
         $topic = "$base/$mac/power";
         $value = defined $power ? ($power ? 1 : 0) : 0;
+        $key   = 'power';
     }
     elsif ($request->isCommand([['mixer'],['volume']])) {
         $topic = "$base/$mac/mixer/volume";
         $value = int($client->volume());
+        $key   = 'volume';
     }
     elsif ($request->isCommand([['mixer'],['muting']])) {
         my $mute = $request->getParam('_newvalue');
         $topic = "$base/$mac/mixer/muting";
         $value = defined $mute ? ($mute ? 1 : 0) : 0;
+        $key   = 'muting';
     }
 
     if (defined $topic) {
-        $log->info("Publishing $value to $topic");
-        _publish($topic, $value);
+        $log->debug("Publishing $key=$value to $topic");
+        _publish($topic, $mac, $key, $value);
     }
 }
 
 sub _publish {
-    my ($topic, $value) = @_;
+    my ($topic, $player, $key, $value) = @_;
 
     my $host   = $prefs->get('broker_host') || 'localhost';
     my $port   = $prefs->get('broker_port') || 1883;
@@ -107,7 +108,7 @@ sub _publish {
     my $retain = $prefs->get('retain') || 0;
 
     my $broker  = "$host:$port";
-    my $payload = qq({"value":$value});
+    my $payload = qq({"player":"$player", "key":"$key", "value":$value});
 
     eval {
         require Net::MQTT::Simple;
@@ -128,7 +129,7 @@ sub _publish {
 }
 
 sub shutdownPlugin {
-    # No-op: LMS handles sub cleanup
+    # No-op
 }
 
 1;
