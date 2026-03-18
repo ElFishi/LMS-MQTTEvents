@@ -1,8 +1,6 @@
 #! /bin/bash
 
-rsync -avz --inplace \
+rsync -avz --delete \
   --chown=squeezeboxserver:nogroup \
-  --exclude='install.sh' \
-  --exclude='.*' \
- ./ root@lms:/var/lib/squeezeboxserver/Plugins/MQTTEvents/
+  plugin/ root@lms:/var/lib/squeezeboxserver/Plugins/MQTTEvents/
 
