@@ -29,3 +29,51 @@ Default base is `lms`.
 - This plugin was almost entirely written by LLMs. 
 - It is just a proof-of-concept and not fully tested. Use it at your own risk.
 - This repository is not maintained.
+
+## Home Assistant Integration
+
+The Home Assistant MQTT integration can expose the values published by this plugin as sensors. Once [Home Assistant is connected to your MQTT broker](https://www.home-assistant.io/integrations/mqtt), you can use its [MQTT discovery feature](https://www.home-assistant.io/integrations/mqtt#mqtt-discovery) to register the sensors automatically. To do so, publish a retained message similar to the one below to the `homeassistant/device/<player-mac>/config` topic.
+
+```json
+{   
+  "dev": {
+    "ids": "<player-mac>",
+    "name": "<player-name> LMS Control"
+  },
+  "o": {
+    "name": "lms2mqtt"
+  },
+  "cmps": {
+    "power": {
+      "p": "binary_sensor",   
+      "name": "power",
+      "state_topic": "lms/<player-mac>/power",
+      "value_template": "{{ 'ON' if value_json.value == 1 else 'OFF' }}",
+      "device_class": "power",
+      "unique_id": "<player-mac>_power"
+    },
+    "volume": {
+      "p": "sensor",
+      "name": "volume",
+      "state_topic": "lms/<player-mac>/mixer/volume",
+      "value_template": "{{ float(value_json.value) / 100 }}",
+      "unique_id": "<player-mac>_volume"
+    },
+    "muting": {
+      "p": "binary_sensor",
+      "name": "is_volume_muted",
+      "state_topic": "lms/<player-mac>/mixer/muting",
+      "value_template": "{{ 'ON' if value_json.value == 1 else 'OFF' }}",
+      "unique_id": "<player-mac>_muted"
+    }
+  }
+}
+```
+
+[Mosquitto](https://mosquitto.org) users can save the payload to a file and publish it with:
+
+```sh
+mosquitto_pub -u <user> -P <password> -h <mqtt-host> -t "homeassistant/device/<player-mac>/config" --retain -f <payload-file>
+```
+
+Once the sensors are registered, you can use them to drive automations on other devices. This is particularly useful when streaming to a fixed-volume DAC connected to an external amplifier, allowing Lyrion to control the amplifier's volume and power state.
